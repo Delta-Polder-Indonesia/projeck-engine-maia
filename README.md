@@ -2,18 +2,129 @@
 
 Policy-network inference API for Maia-style human-like move prediction.
 
-## Run API
+## Run API From Terminal (Complete)
 
-1. Install Python dependencies:
-   `pip install -r requirements.txt`
-2. Set model path:
-   `export MAIA_MODEL_PATH=models/maia.onnx`
-3. Generate Lc0-compatible 1858 mapping JSON (recommended):
-   `python scripts/generate_policy_index_to_uci.py --output models/policy_index_to_uci.json`
-4. Set mapping path (required for policy size 1858 models):
-   `export MAIA_POLICY_MAP_PATH=models/policy_index_to_uci.json`
-5. Start server:
-   `uvicorn maia_api.api:app --host 0.0.0.0 --port 8000`
+### A. Linux or macOS
+
+1. Move to project folder:
+
+```bash
+cd /path/to/project
+```
+
+2. Create and activate virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+3. Install dependencies:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+4. Prepare model and mapping folder:
+
+```bash
+mkdir -p models
+```
+
+5. Put your Maia ONNX model file in `models/maia.onnx`.
+
+6. Generate valid Lc0-compatible 1858 mapping JSON:
+
+```bash
+python scripts/generate_policy_index_to_uci.py --output models/policy_index_to_uci.json
+```
+
+7. Optional: validate existing mapping file only:
+
+```bash
+python scripts/generate_policy_index_to_uci.py --output models/policy_index_to_uci.json --validate-only
+```
+
+8. Set environment variables:
+
+```bash
+export MAIA_MODEL_PATH=models/maia.onnx
+export MAIA_POLICY_MAP_PATH=models/policy_index_to_uci.json
+```
+
+9. Run API server:
+
+```bash
+uvicorn maia_api.api:app --host 0.0.0.0 --port 8000
+```
+
+10. Check health endpoint:
+
+```bash
+curl -s http://localhost:8000/health
+```
+
+### B. Windows PowerShell
+
+1. Move to project folder:
+
+```powershell
+cd C:\path\to\project
+```
+
+2. Create and activate virtual environment:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+3. Install dependencies:
+
+```powershell
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+4. Prepare model and mapping folder:
+
+```powershell
+New-Item -ItemType Directory -Path models -Force
+```
+
+5. Put your Maia ONNX model file in `models/maia.onnx`.
+
+6. Generate valid Lc0-compatible 1858 mapping JSON:
+
+```powershell
+python scripts/generate_policy_index_to_uci.py --output models/policy_index_to_uci.json
+```
+
+7. Optional: validate existing mapping file only:
+
+```powershell
+python scripts/generate_policy_index_to_uci.py --output models/policy_index_to_uci.json --validate-only
+```
+
+8. Set environment variables:
+
+```powershell
+$env:MAIA_MODEL_PATH = "models/maia.onnx"
+$env:MAIA_POLICY_MAP_PATH = "models/policy_index_to_uci.json"
+```
+
+9. Run API server:
+
+```powershell
+uvicorn maia_api.api:app --host 0.0.0.0 --port 8000
+```
+
+10. Check health endpoint:
+
+```powershell
+curl http://localhost:8000/health
+```
 
 For policy size `1858`, the API only accepts mapping loaded from
 `MAIA_POLICY_MAP_PATH` and validates it against canonical Lc0 order.
